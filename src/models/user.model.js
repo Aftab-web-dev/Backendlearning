@@ -50,11 +50,12 @@ const userSchema = new Schema(
     timestamps: true,
   }
 );
+//pre is load before th data 
 userSchema.pre("save", async function (next) {
   if (this.isModified("password")) return next();
   this.password = bcrypt.hash(this.password, 10);
   next();
-});
+});  
 
 userSchema.methods.isPasswordCorrect = async function (password) {
   return await bcrypt.compare(password, this.password);
